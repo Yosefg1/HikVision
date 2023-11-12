@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33513.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikVisionConverter", "HikVisionConverter\HikVisionConverter.csproj", "{60F0231D-DFF4-4802-B6F2-49B267F55AB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikVisionInterface", "HikVisionInterface\HikVisionInterface.csproj", "{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikVisionFfmpeg", "HikVisionFfmpeg\HikVisionFfmpeg.csproj", "{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikVisionRunner", "HikVisionRunner\HikVisionRunner.csproj", "{52A4BED9-29BA-4C63-87D3-7AE39974E73F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60F0231D-DFF4-4802-B6F2-49B267F55AB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60F0231D-DFF4-4802-B6F2-49B267F55AB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60F0231D-DFF4-4802-B6F2-49B267F55AB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60F0231D-DFF4-4802-B6F2-49B267F55AB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11909B97-C737-4E30-AA2A-59B31CC47CE1}
+	EndGlobalSection
+EndGlobal
