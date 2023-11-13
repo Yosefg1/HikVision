@@ -1,7 +1,6 @@
 ﻿using HikVisionModel;
 using Onvif.Core.Client;
 using Onvif.Core.Client.Common;
-using Serilog;
 
 namespace HikVisionInterface.HardwareInteraction;
 
@@ -9,9 +8,6 @@ public class CameraService
 {
     private Config? _cameraConfig;
     private Camera? _camera;
-
-    private const float POS_VEC = 1f;
-    private const float NEG_VEC = 1f;
 
     public CameraService()
     {
@@ -24,12 +20,12 @@ public class CameraService
             var account = new Account(_cameraConfig.IP, _cameraConfig.UserName, _cameraConfig.Password);
 
 
-            _camera = Camera.Create(account, ex => Log.Information("ONVIF EXCEPTION - " + ex.Message));
+            _camera = Camera.Create(account, ex => SerilogLogger.ErrorLog("ONVIF EXCEPTION - " + ex.Message));
 
         }
         catch (Exception ex)
         {
-            Log.Information("Empty config file!!! - " + ex.Message);
+            SerilogLogger.ConsoleLog("Empty config file!!! - " + ex.Message);
         }
     }
 
@@ -43,7 +39,6 @@ public class CameraService
         var Xvector = UnitConverter.MarsToCameraVector(dto.HVel);
         var Yvector = UnitConverter.MarsToCameraVector(dto.VVel);
 
-        Log.Information($"x: {Xspeed} y: {Yspeed}");
         switch (eTopic)
         {
             case PTZControl.Left:

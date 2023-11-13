@@ -27,6 +27,7 @@ public class MqttMessageHandler
 
         //Log.Information($"{eTopic}");
         //Log.Information($"{topic}.{dto.ToJsonString()}");
+        SerilogLogger.ConsoleLog($"{topic}.{dto.PTZ.ToString()}");
 
         await _camera.MoveAsync(dto);
     }

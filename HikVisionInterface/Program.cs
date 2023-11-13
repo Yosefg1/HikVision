@@ -14,9 +14,7 @@ public class Program
         builder.Services.AddSingleton<MqttMessageHandler>();
         builder.Services.AddSingleton<CameraService>();
 
-        Log.Logger = new LoggerConfiguration()
-        .WriteTo.Console()
-        .CreateLogger();
+        SerilogLogger.Init();
 
         var app = builder.Build();
 
