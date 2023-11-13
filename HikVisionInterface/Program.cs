@@ -1,8 +1,6 @@
-
-using HikVisionApiInterface.ConverterInteraction;
 using Serilog;
 
-namespace HikVisionApiInterface;
+namespace HikVisionInterface;
 
 public class Program
 {
@@ -14,6 +12,7 @@ public class Program
         //builder.Services.AddSingleton<CameraClient>();
         builder.Services.AddSingleton<IPTZMqttSubscriber, PTZMqttSubscriber>();
         builder.Services.AddSingleton<MqttMessageHandler>();
+        builder.Services.AddSingleton<CameraService>();
 
         Log.Logger = new LoggerConfiguration()
         .WriteTo.Console()

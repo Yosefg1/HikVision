@@ -1,4 +1,6 @@
-﻿namespace HikVisionConverter.Communication;
+﻿using HikVisionModel;
+
+namespace HikVisionConverter.Communication;
 
 public class MarsService : SNSR_STDSOAPPort
 {
@@ -15,6 +17,8 @@ public class MarsService : SNSR_STDSOAPPort
     public async Task<doDeviceConfigurationResponse> doDeviceConfigurationAsync(doDeviceConfigurationRequest request)
     {
         await _requestHandler.HandleConfigRequest(request.DeviceConfiguration);
+        SerilogLogger.ConsoleLog($"Device Configuration sent to {request.DeviceConfiguration.RequestorIdentification}" +
+            $" with ip {request.DeviceConfiguration.NotificationServiceIPAddress}:{request.DeviceConfiguration.NotificationServicePort}");
         return new doDeviceConfigurationResponse();
     }
 

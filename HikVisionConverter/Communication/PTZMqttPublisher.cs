@@ -9,6 +9,7 @@ public interface IPTZMqttPublisher
 
     Task Connect();
     Task<bool> Publish(PTZControl PTZ, string? payload = null);
+    Task<bool> Publish<T>(T dto, string? payload = null) where T : BaseDto;
 }
 
 public class PTZMqttPublisher : IPTZMqttPublisher
@@ -31,6 +32,25 @@ public class PTZMqttPublisher : IPTZMqttPublisher
     public async Task Connect()
     {
         await _mqttClient.ConnectAsync(_options);
+    }
+
+    public async Task<bool> Publish<T>(T dto, string? payload = null) where T : BaseDto
+    {
+        var msg = new MqttApplicationMessageBuilder()
+            .WithTopic(nameof(PTZControl))
+            .WithPayload(dto.ToJsonString())
+            .Build();
+
+        if (_mqttClient.IsConnected)
+        {
+            await _mqttClient.PublishAsync(msg);
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("client is not connected");
+            return false;
+        }
     }
 
     public async Task<bool> Publish(PTZControl PTZ, string? payload = null)

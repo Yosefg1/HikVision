@@ -1,5 +1,5 @@
 ﻿
-namespace HikVisionApiInterface.HardwareInteraction;
+namespace HikVisionInterface.HardwareInteraction;
 
 public class Config
 {

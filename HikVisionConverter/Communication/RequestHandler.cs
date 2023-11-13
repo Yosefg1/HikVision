@@ -1,4 +1,6 @@
-﻿namespace HikVisionConverter.Communication;
+﻿using HikVisionModel;
+
+namespace HikVisionConverter.Communication;
 
 /// <summary>
 /// Navigate to Implamentation -> <see cref="RequestHandler"/>
@@ -77,7 +79,7 @@ public class RequestHandler : IRequestHandler
         }
         else
         {
-            Console.WriteLine("unknown Mars");
+            SerilogLogger.ErrorLog("Unknown Mars");
         }
 
 

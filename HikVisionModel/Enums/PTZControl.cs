@@ -1,4 +1,4 @@
-﻿namespace HikVisionApiInterface.Enums;
+﻿namespace HikVisionModel.Enums;
 
 public enum PTZControl
 {

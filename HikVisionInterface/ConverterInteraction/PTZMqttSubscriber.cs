@@ -3,7 +3,7 @@ using MQTTnet.Client;
 using MQTTnet.Server;
 using System.Text;
 
-namespace HikVisionApiInterface.ConverterInteraction;
+namespace HikVisionInterface.ConverterInteraction;
 
 public interface IPTZMqttSubscriber
 {

@@ -76,10 +76,11 @@ public class CommandHandler : ICommandHandler
                     double marsHorizontalSpeed = locationCommand.Items[0].Value;
                     double marsVerticalSpeed = locationCommand.Items[1].Value;
 
-                    await _mqtt.Publish(GetCameraMovingCommand(marsHorizontalSpeed, marsVerticalSpeed));
+                    await _mqtt.Publish<MovementDto>(new MovementDto(GetCameraMovingCommand(marsHorizontalSpeed, marsVerticalSpeed),
+                    (float)marsHorizontalSpeed, (float)marsVerticalSpeed));
                 }
-                else await _mqtt.Publish(PTZControl.Stop);
-                return;
+                else await _mqtt.Publish<MovementDto>(new MovementDto(PTZControl.Stop,0,0));
+                    return;
             }
             case SimpleCommandType.SetNorth:
             {
@@ -146,7 +147,7 @@ public class CommandHandler : ICommandHandler
         switch (simpleCommand)
         {
             case SimpleCommandType.Stop:
-                await _mqtt.Publish(PTZControl.Stop);
+                await _mqtt.Publish<MovementDto>(new MovementDto(PTZControl.Stop, 0, 0));
                 return;
             case SimpleCommandType.Abort:
                 //dunno

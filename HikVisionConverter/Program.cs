@@ -1,4 +1,5 @@
 using CoreWCF.Configuration;
+using HikVisionModel;
 
 namespace HikeVisionConverter;
 
@@ -17,6 +18,8 @@ public class Program
         builder.Services.AddSingleton<MarsRepository>();
         builder.Services.AddSingleton<CycleTimerService>();
         builder.Services.AddSingleton<IPTZMqttPublisher, PTZMqttPublisher>();
+
+        SerilogLogger.Init();
 
         var app = builder.Build();
 

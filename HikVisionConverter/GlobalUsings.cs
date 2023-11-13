@@ -1,2 +1,3 @@
 ﻿global using HikVisionConverter.Communication;
-global using HikVisionConverter.Enums;
+global using HikVisionModel.Enums;
+global using HikVisionModel.Dto;

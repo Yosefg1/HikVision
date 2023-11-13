@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Xml;
 
-namespace HikVisionApiInterface.HardwareInteraction;
+namespace HikVisionInterface.HardwareInteraction;
 
 internal class ConfigFactory
 {
