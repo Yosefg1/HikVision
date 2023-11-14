@@ -20,7 +20,7 @@ public class CameraService
             var account = new Account(_cameraConfig.IP, _cameraConfig.UserName, _cameraConfig.Password);
 
 
-            _camera = Camera.Create(account, ex => SerilogLogger.ErrorLog("ONVIF EXCEPTION - " + ex.Message));
+            //_camera = Camera.Create(account, ex => SerilogLogger.ErrorLog("ONVIF EXCEPTION - " + ex.Message));
 
         }
         catch (Exception ex)

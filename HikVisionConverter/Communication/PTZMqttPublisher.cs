@@ -31,7 +31,15 @@ public class PTZMqttPublisher : IPTZMqttPublisher
     }
     public async Task Connect()
     {
-        await _mqttClient.ConnectAsync(_options);
+        try
+        {
+            await _mqttClient.ConnectAsync(_options);
+
+        }
+        catch (Exception ex)
+        {
+            SerilogLogger.ErrorLog($"Error while trying to connect into mosquitto broker. try activating mosquitto on admin mode. \n{ex.Message}");
+        }
     }
 
     public async Task<bool> Publish<T>(T dto, string? payload = null) where T : BaseDto
@@ -48,7 +56,7 @@ public class PTZMqttPublisher : IPTZMqttPublisher
         }
         else
         {
-            Console.WriteLine("client is not connected");
+            SerilogLogger.ErrorLog("Error with publishing on mqtt, try activating mosquitto on admin mode.");
             return false;
         }
     }
@@ -67,7 +75,7 @@ public class PTZMqttPublisher : IPTZMqttPublisher
         }
         else
         {
-            Console.WriteLine("client is not connected");
+            SerilogLogger.ErrorLog("Error with publishing on mqtt, try activating mosquitto on admin mode.");
             return false;
         }
     }

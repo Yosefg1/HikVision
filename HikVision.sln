@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionFfmpeg", "HikVisio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionRunner", "HikVisionRunner\HikVisionRunner.csproj", "{52A4BED9-29BA-4C63-87D3-7AE39974E73F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HikVisionModel", "HikVisionModel\HikVisionModel.csproj", "{7CD4D924-DEF2-4E19-909E-428B1029798C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionModel", "HikVisionModel\HikVisionModel.csproj", "{7CD4D924-DEF2-4E19-909E-428B1029798C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication4", "WebApplication4\WebApplication4.csproj", "{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

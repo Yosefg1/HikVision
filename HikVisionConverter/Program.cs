@@ -1,5 +1,4 @@
 using CoreWCF.Configuration;
-using HikVisionModel;
 
 namespace HikeVisionConverter;
 
@@ -8,7 +7,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        builder.WebHost.UseUrls("http://127.0.0.1:5296");
+        var ip = IP.GetLocalIPAddress();
+        builder.WebHost.UseUrls("http://*:5296");
 
         builder.Services.AddServiceModelServices();
         builder.Services.AddSingleton<MarsService>();
@@ -20,6 +20,7 @@ public class Program
         builder.Services.AddSingleton<IPTZMqttPublisher, PTZMqttPublisher>();
 
         SerilogLogger.Init();
+        SerilogLogger.ConsoleLog($"Running on http://{ip}:5296");
 
         var app = builder.Build();
 

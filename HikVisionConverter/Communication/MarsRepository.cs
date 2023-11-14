@@ -9,6 +9,8 @@ public class MarsRepository
         _xml = xml;
         MarsClients = new();
         Configuration = _xml.GetXml<DeviceConfiguration>(XmlType.Configuration);
+        Configuration.NotificationServiceIPAddress = IP.GetLocalIPAddress();
+        Configuration.NotificationServicePort = "5296";
         FullStatusReport = _xml.GetXml<DeviceStatusReport>(XmlType.FullStatus);
         EmptyStatusReport = _xml.GetXml<DeviceStatusReport>(XmlType.EmptyStatus);
     }

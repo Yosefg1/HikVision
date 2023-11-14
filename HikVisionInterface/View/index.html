@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <title>HikVision Web Interface</title>
+</head>
+<body>
+  <h1>HikVision Web Interface</h1>
+  
+  <label for="cameraIp">Camera IP:</label>
+  <input type="text" id="cameraIp" name="cameraIp"><br><br>
+  
+  <label for="userName">Username:</label>
+  <input type="text" id="userName" name="userName"><br><br>
+  
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password"><br><br>
+  
+  <button onclick="saveSettings()">Save</button>
+  <span id="savedTag" style="display: none;">Saved!</span>
+  
+  <script>
+    function saveSettings() {
+      var cameraIp = document.getElementById("cameraIp").value;
+      var userName = document.getElementById("userName").value;
+      var password = document.getElementById("password").value;
+      
+      var data = {
+        "cameraIp": cameraIp,
+        "userName": userName,
+        "password": password
+      };
+      
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "http://127.0.0.1:5292/save", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          document.getElementById("savedTag").style.display = "inline";
+          setTimeout(function() {
+            document.getElementById("savedTag").style.display = "none";
+          }, 2000);
+        }
+      };
+      xhr.send(JSON.stringify(data));
+    }
+  </script>
+</body>
+</html>
