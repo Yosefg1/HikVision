@@ -17,12 +17,16 @@ public class Program
         builder.Services.AddTransient<XmlFileManager>();
         builder.Services.AddSingleton<MarsRepository>();
         builder.Services.AddSingleton<CycleTimerService>();
+
         builder.Services.AddSingleton<IPTZMqttPublisher, PTZMqttPublisher>();
+        builder.Services.AddSingleton<PTZMqttSubscriber>();
+
 
         SerilogLogger.Init();
         SerilogLogger.ConsoleLog($"Running on http://{ip}:5296");
 
         var app = builder.Build();
+
 
         app.UseServiceModel(builder =>
         {

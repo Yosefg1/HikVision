@@ -7,13 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionConverter", "HikVi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionInterface", "HikVisionInterface\HikVisionInterface.csproj", "{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionFfmpeg", "HikVisionFfmpeg\HikVisionFfmpeg.csproj", "{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionRunner", "HikVisionRunner\HikVisionRunner.csproj", "{52A4BED9-29BA-4C63-87D3-7AE39974E73F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HikVisionModel", "HikVisionModel\HikVisionModel.csproj", "{7CD4D924-DEF2-4E19-909E-428B1029798C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication4", "WebApplication4\WebApplication4.csproj", "{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,22 +23,10 @@ Global
 		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3C1C4A-88E6-4808-BF9C-6AF3136CE204}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E662918-1C19-402F-87C4-9F6FA3CAD8DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{52A4BED9-29BA-4C63-87D3-7AE39974E73F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CD4D924-DEF2-4E19-909E-428B1029798C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21B3A5F2-EE9B-4053-9F0A-A7B2BFE4655F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

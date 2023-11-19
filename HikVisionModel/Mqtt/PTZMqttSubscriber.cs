@@ -1,25 +1,19 @@
-﻿using MQTTnet;
-using MQTTnet.Client;
-using MQTTnet.Server;
+﻿using MQTTnet.Client;
+using MQTTnet;
 using System.Text;
 
-namespace HikVisionInterface.ConverterInteraction;
-
-public interface IPTZMqttSubscriber
-{
-    void Connect();
-}
+namespace HikVisionModel.Mqtt;
 
 public class PTZMqttSubscriber : IPTZMqttSubscriber
 {
-    private IMqttClient _mqttClient;
     private MqttClientOptions _options;
-    private readonly MqttMessageHandler _handler;
 
-    public PTZMqttSubscriber(MqttMessageHandler handler)
+    private IMqttClient _mqttClient;
+
+    public event AsyncMessageHandler? OnMessageRecived;
+
+    public PTZMqttSubscriber()
     {
-        _handler = handler;
-
         MqttFactory factory = new();
         _mqttClient = factory.CreateMqttClient();
         _options = new MqttClientOptionsBuilder()
@@ -29,6 +23,7 @@ public class PTZMqttSubscriber : IPTZMqttSubscriber
             .Build();
 
         _mqttClient.ApplicationMessageReceivedAsync += ApplicationMessageReceivedAsync;
+        Connect();
     }
 
     private async Task ApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
@@ -36,24 +31,25 @@ public class PTZMqttSubscriber : IPTZMqttSubscriber
         var payload = Encoding.UTF8.GetString(arg.ApplicationMessage.PayloadSegment);
         var topic = arg.ApplicationMessage.Topic;
 
-        await _handler.HandleMqttMessage(topic, payload);
+        if (OnMessageRecived is not null)
+        {
+            await OnMessageRecived(this, new(topic, payload));
+        }
     }
 
     public void Connect()
     {
-
-        _mqttClient.ConnectAsync(_options).Wait();
-
-        Subscribe(nameof(PTZControl));
-
+        if (!_mqttClient.IsConnected)
+            _mqttClient.ConnectAsync(_options).Wait();
     }
 
-    private void Subscribe(string topic)
+    public void Subscribe(string topic)
     {
         var topicFilter = new MqttTopicFilterBuilder()
-        .WithTopic(topic)
-        .Build();
+            .WithTopic(topic)
+            .Build();
 
         _mqttClient.SubscribeAsync(topicFilter).Wait();
     }
 }
+public delegate Task AsyncMessageHandler(object? sender, MqttObject e);

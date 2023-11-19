@@ -15,6 +15,7 @@ public enum PTZControl
     Stop,
     Reset,
     Restart,
+    Status,
 }
 //    Left,
 //    Right,

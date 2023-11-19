@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HikVisionFfmpeg;
 
-internal record Config
+public record FfmpegConfig
 {
     
     public string? UserName { get; private set; }

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeviceConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ProtocolVersion="2.2">
+  <DeviceIdentification xmlns="urn:SNSR_STD">
+    <DeviceName>HikeVisionCameraDevice</DeviceName>
+    <DeviceType>EO Device</DeviceType>
+  </DeviceIdentification>
+  <NotificationServiceIPAddress xmlns="urn:SNSR_STD">94.97.2.1</NotificationServiceIPAddress>
+  <NotificationServicePort xmlns="urn:SNSR_STD">5296</NotificationServicePort>
+  <LocationType xmlns="urn:SNSR_STD">
+    <GeodeticLocation Datum="WGS84">
+      <Latitude Units="Decimal Degrees">31.44021</Latitude>
+      <Longitude Units="Decimal Degrees">34.52089</Longitude>
+      <Altitude Units="Meters" Reference="MSL">50</Altitude>
+    </GeodeticLocation>
+  </LocationType>
+  <SensorConfiguration xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionDayCameraSensor</SensorName>
+      <SensorType>Day Camera Color</SensorType>
+    </SensorIdentification>
+    <OpticalConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Zoom</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Operation>Stop</Operation>
+        <Control>Manual</Control>
+        <Limit>Far</Limit>
+        <Limit>Near</Limit>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Focus</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Operation>Stop</Operation>
+        <Operation>Far Limit</Operation>
+        <Operation>Near Limit</Operation>
+        <Control>Continuous Auto</Control>
+        <Control>Manual</Control>
+        <Limit>Far</Limit>
+        <Limit>Near</Limit>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Contrast</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Control>Manual</Control>
+        <Control>Continuous Auto</Control>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Filter</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <FilterDescriptionType>
+          <FilterDescription>Default</FilterDescription>
+          <FilterNumber>1</FilterNumber>
+        </FilterDescriptionType>
+        <FilterDescriptionType>
+          <FilterDescription>Colored</FilterDescription>
+          <FilterNumber>2</FilterNumber>
+        </FilterDescriptionType>
+      </OpticalCommandConfiguration>
+    </OpticalConfiguration>
+    <SimpleCommandConfiguration>Abort</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>Restart</SimpleCommandConfiguration>
+  </SensorConfiguration>
+  <SensorConfiguration xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionDayCameraBWSensor</SensorName>
+      <SensorType>Day Camera BW</SensorType>
+    </SensorIdentification>
+    <OpticalConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Zoom</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Operation>Stop</Operation>
+        <Control>Manual</Control>
+        <Limit>Far</Limit>
+        <Limit>Near</Limit>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Focus</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Operation>Stop</Operation>
+        <Operation>Far Limit</Operation>
+        <Operation>Near Limit</Operation>
+        <Control>Manual</Control>
+        <Control>Continuous Auto</Control>
+        <Limit>Far</Limit>
+        <Limit>Near</Limit>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+      <OpticalCommandConfiguration>
+        <SimpleCommand>Contrast</SimpleCommand>
+        <Operation>Set</Operation>
+        <Operation>Get</Operation>
+        <Operation>Plus</Operation>
+        <Operation>Minus</Operation>
+        <Control>Manual</Control>
+        <Control>Continuous Auto</Control>
+        <FieldOfViewConfigurationType>
+          <ValueRange>
+            <Min Units="Undefined">0</Min>
+            <Max Units="Undefined">100</Max>
+          </ValueRange>
+        </FieldOfViewConfigurationType>
+      </OpticalCommandConfiguration>
+    </OpticalConfiguration>
+    <SimpleCommandConfiguration>Abort</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>Restart</SimpleCommandConfiguration>
+  </SensorConfiguration>
+  <SensorConfiguration xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>PedestalSensor</SensorName>
+      <SensorType>Pedestal</SensorType>
+    </SensorIdentification>
+    <PedestalConfiguration>
+      <LocationPrecision Units="Undefined">0</LocationPrecision>
+      <HorizontalVelocityRange>
+        <Min Units="Undefined">1</Min>
+        <Max Units="Undefined">10</Max>
+      </HorizontalVelocityRange>
+      <VerticalVelocityRange>
+        <Min Units="Undefined">1</Min>
+        <Max Units="Undefined">10</Max>
+      </VerticalVelocityRange>
+      <AzimuthRange>
+        <Min Units="Mils">0</Min>
+        <Max Units="Mils">1</Max>
+      </AzimuthRange>
+      <ElevationAngleRange>
+        <Min Units="Mils">-1600</Min>
+        <Max Units="Mils">0.389056</Max>
+      </ElevationAngleRange>
+      <PedestalMovementTypeCapabilities>Simultaneous Horizontal Vertical</PedestalMovementTypeCapabilities>
+      <PedestalVelocityControl>Manual</PedestalVelocityControl>
+    </PedestalConfiguration>
+    <SimpleCommandConfiguration>Move</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>Stop</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>GoTo</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>SetNorth</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>Abort</SimpleCommandConfiguration>
+    <SimpleCommandConfiguration>Restart</SimpleCommandConfiguration>
+  </SensorConfiguration>
+  <SensorConfiguration xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>VideoSwitchSensor</SensorName>
+      <SensorType>Video Switch</SensorType>
+    </SensorIdentification>
+    <VideoSwitchConfiguration>
+      <PrimaryVideoChannelID>1</PrimaryVideoChannelID>
+      <VideoSwitchCommandConfiguration>
+        <SimpleCommand>Set</SimpleCommand>
+        <VideoChannelConfiguration>
+          <VideoChannelID>1</VideoChannelID>
+          <SensorIdentification>
+            <SensorName>HikeVisionDayCameraSensor</SensorName>
+            <SensorType>Day Camera Color</SensorType>
+          </SensorIdentification>
+          <SensorIdentification>
+            <SensorName>HikeVisionDayCameraBWSensor</SensorName>
+            <SensorType>Day Camera BW</SensorType>
+          </SensorIdentification>
+        </VideoChannelConfiguration>
+      </VideoSwitchCommandConfiguration>
+    </VideoSwitchConfiguration>
+  </SensorConfiguration>
+  <SensorConfiguration xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>VideoEncoderSensor</SensorName>
+      <SensorType>Video Encoder</SensorType>
+    </SensorIdentification>
+    <VideoEncoderConfiguration>
+      <VideoChannelID>1</VideoChannelID>
+      <MulticastAddress>239.0.0.1</MulticastAddress>
+      <MulticastPort>5000</MulticastPort>
+    </VideoEncoderConfiguration>
+    <SimpleCommandConfiguration>Reset</SimpleCommandConfiguration>
+  </SensorConfiguration>
+</DeviceConfiguration>

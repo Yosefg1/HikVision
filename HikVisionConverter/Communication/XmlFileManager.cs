@@ -12,7 +12,6 @@ public enum XmlType
 }
 public class XmlFileManager
 {
-
     private readonly Dictionary<XmlType, string> _dict = new()
     {
         { XmlType.Configuration, "DeviceConfiguration.xml" },
@@ -44,5 +43,25 @@ public class XmlFileManager
         {
             throw new Exception($"Problam getting {fileType} file \n {ex.Message}");
         }
+    }
+
+    internal void Write<T>(T MarsMessage)
+    {
+        XmlType xml;
+        var type = typeof(T);
+        if (type == typeof(DeviceConfiguration))
+            xml = XmlType.Configuration;
+        else if (type == typeof(DeviceStatusReport))
+            xml = XmlType.FullStatus;
+        else
+        {
+            SerilogLogger.ConsoleLog("App can only Write Configuration and Fullstatus");
+            return;
+        }
+
+         XmlSerializer serializer = new(typeof(T));
+        using FileStream fileStream = new(_dict[xml], FileMode.Create);
+
+        serializer.Serialize(fileStream, MarsMessage);
     }
 }

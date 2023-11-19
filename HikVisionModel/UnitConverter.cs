@@ -20,4 +20,6 @@ public static class UnitConverter
 
     public static float MarsToCameraVector(float inputValue)
         => inputValue >= 0 ? 1f : -1f;
+
+
 }

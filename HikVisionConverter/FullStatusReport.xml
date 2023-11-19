@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DeviceStatusReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" MessageType="Report" ProtocolVersion="2.2">
+  <DeviceIdentification xmlns="urn:SNSR_STD">
+    <DeviceName>HikeVisionCameraDevice</DeviceName>
+    <DeviceType>EO Device</DeviceType>
+  </DeviceIdentification>
+  <DetailedSensorBIT xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionCameraSensor</SensorName>
+      <SensorType>Day Camera Color</SensorType>
+    </SensorIdentification>
+    <FaultCode>202</FaultCode>
+  </DetailedSensorBIT>
+  <DetailedSensorBIT xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionDayCameraBWSensor</SensorName>
+      <SensorType>Day Camera BW</SensorType>
+    </SensorIdentification>
+    <FaultCode>215</FaultCode>
+  </DetailedSensorBIT>
+  <DetailedSensorBIT xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>PedestalSensor</SensorName>
+      <SensorType>Pedestal</SensorType>
+    </SensorIdentification>
+    <FaultCode>252</FaultCode>
+    <FaultCode>247</FaultCode>
+  </DetailedSensorBIT>
+  <SensorStatusReport xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionDayCameraSensor</SensorName>
+      <SensorType>Day Camera Color</SensorType>
+    </SensorIdentification>
+    <SensorTechnicalState>OK</SensorTechnicalState>
+    <CommunicationState>OK</CommunicationState>
+    <PowerState>Yes</PowerState>
+    <SensorMode>Normal</SensorMode>
+    <OpticalStatus>
+      <FieldOfViewStatusType>
+        <Value Units="Mils">1</Value>
+      </FieldOfViewStatusType>
+      <ZoomStatusType>
+        <eZoomEnabled>Undefined</eZoomEnabled>
+      </ZoomStatusType>
+      <FocusStatusType />
+      <FilterNumber>1</FilterNumber>
+      <Contrast>50</Contrast>
+    </OpticalStatus>
+  </SensorStatusReport>
+  <SensorStatusReport xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>HikeVisionDayCameraBWSensor</SensorName>
+      <SensorType>Day Camera BW</SensorType>
+    </SensorIdentification>
+    <SensorTechnicalState>OK</SensorTechnicalState>
+    <CommunicationState>OK</CommunicationState>
+    <PowerState>Yes</PowerState>
+    <SensorMode>Normal</SensorMode>
+    <OpticalStatus>
+      <FieldOfViewStatusType>
+        <Value Units="Mils">1</Value>
+      </FieldOfViewStatusType>
+      <ZoomStatusType>
+        <eZoomEnabled>Undefined</eZoomEnabled>
+      </ZoomStatusType>
+      <FocusStatusType />
+      <Contrast>50</Contrast>
+    </OpticalStatus>
+  </SensorStatusReport>
+  <SensorStatusReport xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>PedestalSensor</SensorName>
+      <SensorType>Pedestal</SensorType>
+    </SensorIdentification>
+    <SensorTechnicalState>OK</SensorTechnicalState>
+    <CommunicationState>OK</CommunicationState>
+    <PowerState>Yes</PowerState>
+    <SensorMode>Normal</SensorMode>
+    <PedestalStatus>
+      <Elevation Units="Mils">0.575778</Elevation>
+      <Azimuth Units="Mils">0.409778</Azimuth>
+      <HorizontalVelocity Units="Undefined">5</HorizontalVelocity>
+      <VerticalVelocity Units="Undefined">5</VerticalVelocity>
+      <LastNorthingTime Zone="GMT">2023-05-29T13:08:04.8849364+03:00</LastNorthingTime>
+      <HorizontalMovementState>Undefined</HorizontalMovementState>
+      <VerticalMovementState>Undefined</VerticalMovementState>
+    </PedestalStatus>
+  </SensorStatusReport>
+  <SensorStatusReport xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>VideoSwitchSensor</SensorName>
+      <SensorType>Video Switch</SensorType>
+    </SensorIdentification>
+    <SensorTechnicalState>OK</SensorTechnicalState>
+    <CommunicationState>OK</CommunicationState>
+    <PowerState>Yes</PowerState>
+    <SensorMode>Normal</SensorMode>
+    <VideoSwitchStatus>
+      <VideoChannel>
+        <VideoChannelID>1</VideoChannelID>
+        <SensorIdentification>
+          <SensorName>HikeVisionDayCameraSensor</SensorName>
+          <SensorType>Day Camera Color</SensorType>
+        </SensorIdentification>
+      </VideoChannel>
+    </VideoSwitchStatus>
+  </SensorStatusReport>
+  <SensorStatusReport xmlns="urn:SNSR_STD">
+    <SensorIdentification>
+      <SensorName>VideoEncoderSensor</SensorName>
+      <SensorType>Video Encoder</SensorType>
+    </SensorIdentification>
+    <SensorTechnicalState>OK</SensorTechnicalState>
+    <CommunicationState>OK</CommunicationState>
+    <PowerState>Yes</PowerState>
+    <SensorMode>Normal</SensorMode>
+  </SensorStatusReport>
+</DeviceStatusReport>

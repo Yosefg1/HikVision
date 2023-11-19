@@ -8,18 +8,18 @@ internal class ConfigFactory
 {
     public readonly static string CONFIG_FILE_PATH = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Config.json");
 
-    public static Config Build()
+    public static FfmpegConfig Build()
     {
         try
         {
             if (File.Exists(CONFIG_FILE_PATH))
             {
                 var json = File.ReadAllText(CONFIG_FILE_PATH);
-                return JsonConvert.DeserializeObject<Config>(json)!;
+                return JsonConvert.DeserializeObject<FfmpegConfig>(json)!;
             }
             else
             {
-                var config = new Config();
+                var config = new FfmpegConfig();
                 var json = JsonConvert.SerializeObject(config);
                 File.WriteAllText(CONFIG_FILE_PATH, json);
                 return config;

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HikVisionFfmpeg;
 
-internal class FfmpegService
+public class FfmpegService
 {
-    private readonly Config _config;
+    private readonly FfmpegConfig _config;
     private Process? _ffmpegProcess;
 
-    public FfmpegService(Config config)
+    public FfmpegService(FfmpegConfig config)
     {
         _config = config;
     }
