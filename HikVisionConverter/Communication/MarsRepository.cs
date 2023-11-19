@@ -55,6 +55,7 @@ public class MarsRepository
         }
 
         _xml.Write<DeviceStatusReport>(FullStatusReport);
+        //hi
     }
 
     public async Task SendEmptyDeviceStatusReport(string clientName)
