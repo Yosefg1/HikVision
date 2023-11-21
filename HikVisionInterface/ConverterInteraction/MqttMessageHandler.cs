@@ -9,12 +9,10 @@ public class MqttMessageHandler
     private readonly PTZMqttSubscriber _subscriber;
 
     public MqttMessageHandler(CameraService cameraService,
-        PTZMqttSubscriber subscriber,
-        XmlUpdaterService xml)
+        PTZMqttSubscriber subscriber)
     {
         _camera = cameraService;
         _subscriber = subscriber;
-        xml.Start();
     }
 
     public void Initialize()
@@ -42,9 +40,7 @@ public class MqttMessageHandler
 
         PTZControl eTopic = (PTZControl)Enum.Parse(typeof(PTZControl), dto.PTZ.ToString());
 
-        //Log.Information($"{eTopic}");
-        //Log.Information($"{topic}.{dto.ToJsonString()}");
-        SerilogLogger.ConsoleLog($"{topic}.{dto.PTZ} " + $"(x:{dto.HVel},y:{dto.VVel})");
+        SerilogLogger.ConsoleLog($"{topic}.{dto.PTZ}");
 
         await _camera.MoveAsync(dto);
     }

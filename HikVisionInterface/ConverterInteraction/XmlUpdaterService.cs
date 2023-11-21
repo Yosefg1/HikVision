@@ -5,19 +5,12 @@ namespace HikVisionInterface.ConverterInteraction;
 
 public class XmlUpdaterService
 {
-    private readonly System.Timers.Timer PanTiltTimer;
-
-    private const int FULLSTATUS_INTERVAL = 10 * 1000;
-
     private readonly IPTZMqttPublisher _publisher;
     private readonly CameraService _camera;
 
     public XmlUpdaterService(IPTZMqttPublisher publisher,
         CameraService camera)
     {
-        PanTiltTimer = new(FULLSTATUS_INTERVAL);
-        PanTiltTimer.Elapsed += UpdatePanTilt;
-        
         _publisher = publisher;
         _camera = camera;
     }
@@ -25,7 +18,6 @@ public class XmlUpdaterService
     public void Start()
     {
         _publisher.Connect();
-        PanTiltTimer.Start();
     }
 
     private void UpdatePanTilt(object? sender, ElapsedEventArgs e)

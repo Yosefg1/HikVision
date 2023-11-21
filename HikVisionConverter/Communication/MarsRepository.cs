@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HikVisionConverter.Communication;
@@ -38,24 +39,28 @@ public class MarsRepository
     {
         if (e.Topic is not nameof(Topics.PanTiltStatus)) return;
 
-        var pan = BaseDto.ToJsonObject<PanTiltDto>(e.Payload!).Pan;
-        var tilt = BaseDto.ToJsonObject<PanTiltDto>(e.Payload!).Tilt;
+        var obj = BaseDto.ToJsonObject<PanTiltDto>(e.Payload!);
 
-        SerilogLogger.ConsoleLog($"PanTilt Status Updated pan:{pan} tilt:{tilt}");
+        var pan = obj.Pan;
+        var tilt = obj.Tilt;
+
 
         foreach (var item in FullStatusReport.Items)
         {
-            SensorStatusReport? k = item as SensorStatusReport;
-            if (k is null) continue;
+            if (item is not SensorStatusReport k) continue;
+
             if (k.Item is PedestalStatus pedestal)
             {
-                pedestal.Elevation.Value = double.Parse(pan);
-                pedestal.Azimuth.Value = double.Parse(tilt);
+                var el = UnitConverter.ConvertToAngle(double.Parse(tilt));
+                var az = UnitConverter.ConvertToAngle(double.Parse(pan));
+                //if azimuth or eleveation is 0 mars thinks camera is לא זמין
+                pedestal.Elevation.Value = el == 0 ? 0.1 : el;
+                pedestal.Azimuth.Value = az == 0 ? 0.1 : az;
             }
         }
+        await SendFullStatusReportToAll();
 
         _xml.Write<DeviceStatusReport>(FullStatusReport);
-        //hi
     }
 
     public async Task SendEmptyDeviceStatusReport(string clientName)
@@ -73,7 +78,19 @@ public class MarsRepository
 
         await MarsClients[client].SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(FullStatusReport));
 
-        SerilogLogger.ConsoleLog("FullStatusReport Sent.");
+        SerilogLogger.ConsoleLog($"FullStatusReport Sent to {client}.");
+    }
+
+    public async Task SendFullStatusReportToAll()
+    {
+        if (MarsClients.IsNullOrEmpty()) return;
+
+        foreach (var mars in MarsClients)
+        {
+            await mars.Value.SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(FullStatusReport));
+            SerilogLogger.ConsoleLog($"FullStatusReport Sent to {mars.Key}.");
+
+        }
     }
 
     private DeviceStatusReport CreateKeepAlive()

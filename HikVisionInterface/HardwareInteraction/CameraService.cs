@@ -3,17 +3,23 @@ using Onvif.Core.Client;
 using Onvif.Core.Client.Common;
 using Onvif.Core.Client.Ptz;
 using Onvif.Core.Discovery;
+using System;
 
 namespace HikVisionInterface.HardwareInteraction;
 
 public class CameraService
 {
+    private readonly IPTZMqttPublisher _publisher;
+
     private Config? _cameraConfig;
     private Camera? _camera;
 
 
-    public CameraService()
+    public CameraService(IPTZMqttPublisher publisher)
     {
+        _publisher = publisher;
+        _publisher.Connect();
+
         try
         {
             _cameraConfig = ConfigFactory.Build();
@@ -35,11 +41,6 @@ public class CameraService
         var status = await _camera!.Ptz.GetStatusAsync(_camera.Profile.token);
 
         var vector = status.Position.PanTilt;
-
-        //var vector = new PTZVector
-        //{
-        //    PanTilt = new Vector2D { x = 0, y = 16f }
-        //};
 
         return new(vector.x.ToString(), vector.y.ToString());
     }
@@ -97,9 +98,12 @@ public class CameraService
                 var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
             case PTZControl.Stop:
-            var stopVector = new PTZVector { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
-            var stopSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
-            return await _camera.MoveAsync(MoveType.Relative, stopVector, stopSpeed, 0);
+                var panTiltDto = await GetPanTiltAsync();
+                await _publisher.Publish(panTiltDto, nameof(Topics.PanTiltStatus));
+
+                var stopVector = new PTZVector { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
+                var stopSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
+                return await _camera.MoveAsync(MoveType.Relative, stopVector, stopSpeed, 0);
             case PTZControl.Reset:
                 return true;
             case PTZControl.Restart:
