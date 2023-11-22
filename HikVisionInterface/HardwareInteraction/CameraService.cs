@@ -98,12 +98,13 @@ public class CameraService
                 var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
             case PTZControl.Stop:
-                var panTiltDto = await GetPanTiltAsync();
-                await _publisher.Publish(panTiltDto, nameof(Topics.PanTiltStatus));
-
                 var stopVector = new PTZVector { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
                 var stopSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
-                return await _camera.MoveAsync(MoveType.Relative, stopVector, stopSpeed, 0);
+                bool res = await _camera.MoveAsync(MoveType.Relative, stopVector, stopSpeed, 0);
+
+                var panTiltDto = await GetPanTiltAsync();
+                await _publisher.Publish(panTiltDto, nameof(Topics.PanTiltStatus));
+                return res;
             case PTZControl.Reset:
                 return true;
             case PTZControl.Restart:

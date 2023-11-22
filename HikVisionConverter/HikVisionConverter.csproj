@@ -12,7 +12,6 @@
     <PackageReference Include="CoreWCF.Http" Version="1.5.1" />
     <PackageReference Include="CoreWCF.Primitives" Version="1.5.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="MQTTnet" Version="4.3.1.873" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="6.2.0" />

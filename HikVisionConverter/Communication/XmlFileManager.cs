@@ -60,7 +60,7 @@ public class XmlFileManager
         }
 
          XmlSerializer serializer = new(typeof(T));
-        using FileStream fileStream = new(_dict[xml], FileMode.Create);
+        using FileStream fileStream = new(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Files", _dict[xml]), FileMode.Create);
 
         serializer.Serialize(fileStream, MarsMessage);
     }

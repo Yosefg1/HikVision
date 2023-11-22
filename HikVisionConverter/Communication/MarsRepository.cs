@@ -51,8 +51,10 @@ public class MarsRepository
 
             if (k.Item is PedestalStatus pedestal)
             {
-                var el = UnitConverter.ConvertToAngle(double.Parse(tilt));
-                var az = UnitConverter.ConvertToAngle(double.Parse(pan));
+                var dt = double.Parse(tilt);
+                var daz = double.Parse(pan);
+                var el = UnitConverter.ConvertToAngle(daz);
+                var az = UnitConverter.ConvertToAngle(dt);
                 //if azimuth or eleveation is 0 mars thinks camera is לא זמין
                 pedestal.Elevation.Value = el == 0 ? 0.1 : el;
                 pedestal.Azimuth.Value = az == 0 ? 0.1 : az;

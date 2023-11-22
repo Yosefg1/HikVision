@@ -22,7 +22,10 @@ public static class UnitConverter
         => inputValue >= 0 ? 1f : -1f;
 
     public static double ConvertToAngle(double inputValue)
-        => Math.Asin(inputValue) * (180/Math.PI);
-
-
+    {
+        var asin = Math.Asin(inputValue);
+        var rad = (180 / Math.PI);
+        var res = asin * rad;
+        return res + 180;
+    }
 }
