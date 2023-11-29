@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Serilog;
 
 namespace HikVisionConverter.Communication;
 
@@ -37,6 +36,7 @@ public class MarsRepository
 
     private async Task OnMqttMessageRecived(object? sender, MqttObject e)
     {
+        SerilogLogger.ConsoleLog($"PanTilt update: {e}");
         if (e.Topic is not nameof(Topics.PanTiltStatus)) return;
 
         var obj = BaseDto.ToJsonObject<PanTiltDto>(e.Payload!);
@@ -53,11 +53,13 @@ public class MarsRepository
             {
                 var dt = double.Parse(tilt);
                 var daz = double.Parse(pan);
-                var el = UnitConverter.ConvertToAngle(daz);
-                var az = UnitConverter.ConvertToAngle(dt);
+                var el = UnitConverter.ConvertToMils(daz);
+                var az = UnitConverter.ConvertToMils(dt);
+
                 //if azimuth or eleveation is 0 mars thinks camera is לא זמין
-                pedestal.Elevation.Value = el == 0 ? 0.1 : el;
-                pedestal.Azimuth.Value = az == 0 ? 0.1 : az;
+                pedestal.Elevation.Value = el;
+                pedestal.Azimuth.Value = az;
+                SerilogLogger.ConsoleLog($"elevation: {el} azimuth: {az}");
             }
         }
         await SendFullStatusReportToAll();
@@ -90,10 +92,71 @@ public class MarsRepository
         foreach (var mars in MarsClients)
         {
             await mars.Value.SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(FullStatusReport));
-            SerilogLogger.ConsoleLog($"FullStatusReport Sent to {mars.Key}.");
+            SerilogLogger.ConsoleLog($"FullStatusReport Sent to {mars.Key} after stop command.");
 
         }
     }
+
+    public async Task SendSpecificFullStatusReportToAll(SensorTypeType sensorType)
+    {
+        var deviceStatusReport = CreateUpdatedStatusReportOfSpecificSensor(sensorType);
+
+
+        foreach (string name in MarsClients.Keys)
+        {
+            // if client has subscribed to status reports
+            if (MarsClients[name].SubscriptionTypes!.Contains(SubscriptionTypeType.TechnicalStatus))
+            {
+                await MarsClients[name].SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(deviceStatusReport));
+            }
+        }
+
+        await SendFullStatusReportToAll();
+
+    }
+
+    private DeviceStatusReport CreateUpdatedStatusReportOfSpecificSensor(SensorTypeType sensorType)
+    {
+
+        DeviceStatusReport deviceStatusReport = new DeviceStatusReport
+        {
+            DeviceIdentification = FullStatusReport.DeviceIdentification,
+            MessageType = FullStatusReport.MessageType,
+            ProtocolVersion = FullStatusReport.ProtocolVersion
+        };
+
+        List<object> itemsList = new List<object>();
+        foreach (var item in FullStatusReport.Items)
+        {
+            if (item is SensorStatusReport)
+            {
+                var sensorStatusReport = (SensorStatusReport)item;
+                var sensorStatusReportClone = new SensorStatusReport
+                {
+                    SensorIdentification = sensorStatusReport.SensorIdentification,
+                    SensorTechnicalState = sensorStatusReport.SensorTechnicalState,
+                    CommunicationState = sensorStatusReport.CommunicationState,
+                    PowerState = sensorStatusReport.PowerState,
+                    SensorMode = sensorStatusReport.SensorMode,
+                    CalibrationState = sensorStatusReport.CalibrationState
+                };
+
+                if (sensorStatusReport.SensorIdentification?.SensorType == sensorType)
+                    sensorStatusReportClone.Item = sensorStatusReport.Item;
+
+                itemsList.Add(sensorStatusReport);
+            }
+
+            else if (item is DetailedSensorBITType)
+                itemsList.Add((DetailedSensorBITType)item);
+        }
+
+        deviceStatusReport.Items = itemsList.ToArray();
+
+        return deviceStatusReport;
+    }
+
+
 
     private DeviceStatusReport CreateKeepAlive()
     {

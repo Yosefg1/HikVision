@@ -35,7 +35,10 @@ public class FfmpegService
                 RedirectStandardError = false,
 
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg.exe"),
-                Arguments = "-an -i " + $"rtsp://{_config.UserName}:{_config.Password}@{_config.IP}:554" + 
+                //Arguments = "-an -i " + $"rtsp://{_config.UserName}:{_config.Password}@{_config.IP}:554" + 
+                //$" -f mpegts -c copy -fflags nobuffer udp://{_config.UDPMulticastIp}:{_config.UDPMulticastPort}?pkt_size=1316"
+
+                Arguments = "-an -i " + $"udp://@235.97.2.41:51001" +
                 $" -f mpegts -c copy -fflags nobuffer udp://{_config.UDPMulticastIp}:{_config.UDPMulticastPort}?pkt_size=1316"
             };
 

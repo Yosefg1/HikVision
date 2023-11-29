@@ -1,9 +1,6 @@
-﻿using HikVisionModel;
+﻿using Newtonsoft.Json;
 using Onvif.Core.Client;
 using Onvif.Core.Client.Common;
-using Onvif.Core.Client.Ptz;
-using Onvif.Core.Discovery;
-using System;
 
 namespace HikVisionInterface.HardwareInteraction;
 
@@ -38,11 +35,21 @@ public class CameraService
 
     public async Task<PanTiltDto> GetPanTiltAsync()
     {
-        var status = await _camera!.Ptz.GetStatusAsync(_camera.Profile.token);
+        try
+        {
+            var status = await _camera!.Ptz.GetStatusAsync(_camera.Profile.token);
 
-        var vector = status.Position.PanTilt;
+            SerilogLogger.ConsoleLog(JsonConvert.SerializeObject(status));
 
-        return new(vector.x.ToString(), vector.y.ToString());
+            var vector = status.Position.PanTilt;
+
+            return new(vector.x.ToString(), vector.y.ToString());
+        }
+        catch (Exception ex)
+        {
+            SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values {ex.Message}");
+            return new PanTiltDto("0.577", "0.3213");
+        }
     }
 
     public async Task<bool> MoveAsync(MovementDto dto)
@@ -100,7 +107,7 @@ public class CameraService
             case PTZControl.Stop:
                 var stopVector = new PTZVector { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
                 var stopSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
-                bool res = await _camera.MoveAsync(MoveType.Relative, stopVector, stopSpeed, 0);
+                bool res = await _camera.MoveAsync(MoveType.Continuous, stopVector, stopSpeed, 0);
 
                 var panTiltDto = await GetPanTiltAsync();
                 await _publisher.Publish(panTiltDto, nameof(Topics.PanTiltStatus));

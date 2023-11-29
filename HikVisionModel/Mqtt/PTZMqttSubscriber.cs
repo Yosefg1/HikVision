@@ -39,8 +39,15 @@ public class PTZMqttSubscriber : IPTZMqttSubscriber
 
     public void Connect()
     {
-        if (!_mqttClient.IsConnected)
-            _mqttClient.ConnectAsync(_options).Wait();
+        try
+        {
+            if (!_mqttClient.IsConnected)
+                _mqttClient.ConnectAsync(_options).Wait();
+        }
+        catch (Exception ex)
+        {
+            SerilogLogger.ErrorLog($"Error while trying to connect into mosquitto broker. try activating mosquitto on admin mode. \n{ex.Message}");
+        }
     }
 
     public void Subscribe(string topic)

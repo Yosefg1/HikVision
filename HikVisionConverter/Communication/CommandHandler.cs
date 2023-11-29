@@ -45,12 +45,12 @@ public class CommandHandler : ICommandHandler
             case LocationCommandType locationCommand:
                 await HandleLocationCommand(locationCommand);
                 break;
-            //case VideoSwitchCommandType videoSwitchCommand:
-            //    HandleVideoSwitch(videoSwitchCommand);
-            //    break;
-            //case ScriptCommandType scriptCommand:
-            //    HandleScriptCommand(scriptCommand);
-            //    break;
+            case VideoSwitchCommandType videoSwitchCommand:
+                await HandleVideoSwitch(videoSwitchCommand);
+                break;
+                //case ScriptCommandType scriptCommand:
+                //    HandleScriptCommand(scriptCommand);
+                //    break;
         }
 
     }
@@ -60,9 +60,72 @@ public class CommandHandler : ICommandHandler
         throw new NotImplementedException();
     }
 
-    private void HandleVideoSwitch(VideoSwitchCommandType command)
+    private async Task HandleVideoSwitch(VideoSwitchCommandType videoSwitchCommand)
     {
-        throw new NotImplementedException();
+        if (videoSwitchCommand.SimpleCommand != SimpleCommandType.Set)
+            return;
+
+        var videoChannels = videoSwitchCommand.VideoChannel;
+        if (videoChannels?.Length <= 0)
+            return;
+
+        foreach (var videoChannel in videoChannels)
+        {
+            if (videoChannel.Item is SensorIdentificationType)
+            {
+                var sensorIdentification = (SensorIdentificationType)videoChannel.Item;
+                if (videoChannel.VideoChannelID == VideoChannelIDType.Item1)
+
+                SetSensorInVideoChannel(videoChannel.VideoChannelID,
+                    sensorIdentification.SensorType, sensorIdentification.SensorName);
+                await _repo.SendSpecificFullStatusReportToAll(sensorIdentification.SensorType);
+            }
+
+            if (videoChannel.Item is SensorTypeType sensorType)
+            {
+                if (videoChannel.VideoChannelID == VideoChannelIDType.Item1)
+
+                    SetSensorInVideoChannel(videoChannel.VideoChannelID, sensorType);
+                await _repo.SendSpecificFullStatusReportToAll(sensorType);
+            }
+        }
+
+        await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.DayMode),nameof(SensorTypeType.VideoSwitch));
+    }
+
+    private void SetSensorInVideoChannel(VideoChannelIDType id, SensorTypeType sensorType, string sensorName = null)
+    {
+        if (_repo.FullStatusReport?.Items == null)
+            return;
+
+        foreach (var item in _repo.FullStatusReport.Items)
+        {
+            if (item is SensorStatusReport sensorStatusReport)
+            {
+                if (sensorStatusReport.Item is VideoSwitchStatus)
+                {
+                    VideoSwitchStatus videoSwitchStatus = (VideoSwitchStatus)sensorStatusReport.Item;
+                    foreach (var videoChannel in videoSwitchStatus.VideoChannel)
+                    {
+                        if (videoChannel.VideoChannelID == id)
+                        {
+                            if (sensorName != null)
+                            {
+                                videoChannel.Item = new SensorIdentificationType
+                                {
+                                    SensorSubTypeSpecified = false,
+                                    SensorName = sensorName,
+                                    SensorType = sensorType
+                                };
+                            }
+                            else videoChannel.Item = sensorType;
+
+                            return;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private async Task HandleLocationCommand(LocationCommandType locationCommand)

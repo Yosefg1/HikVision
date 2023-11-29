@@ -1,9 +1,5 @@
-using HikVisionInterface.ConverterInteraction;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
-using System.ComponentModel;
-using System.Net.Mime;
+
 
 namespace HikVisionInterface;
 

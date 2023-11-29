@@ -16,6 +16,8 @@ public enum PTZControl
     Reset,
     Restart,
     Status,
+    NightMode,
+    DayMode,
 }
 //    Left,
 //    Right,
@@ -31,8 +33,6 @@ public enum PTZControl
 //    FocusNear,
 //    FocusFar,
 //    Stop,
-//    NightMode,
-//    DayMode,
 //    Reset,
 //    Restart,
 //    Move,
