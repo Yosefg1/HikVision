@@ -23,7 +23,7 @@ public class CameraService
             var pth = ConfigFactory.CONFIG_FILE_PATH;
             if (!_cameraConfig.ValidConfig()) throw new Exception($"Config file is not valid go to {pth} and fill in the information");
 
-            var account = new Account(_cameraConfig.IP, _cameraConfig.UserName, _cameraConfig.Password);
+            var account = new Account(_cameraConfig.CameraIp, _cameraConfig.UserName, _cameraConfig.Password);
 
             _camera = Camera.Create(account, ex => SerilogLogger.ErrorLog("ONVIF EXCEPTION - " + ex.Message));
         }
@@ -47,7 +47,7 @@ public class CameraService
         }
         catch (Exception ex)
         {
-            SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values {ex.Message}");
+            SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values \n{ex}");
             return new PanTiltDto("0.577", "0.3213");
         }
     }
@@ -97,11 +97,11 @@ public class CameraService
                 var rightDownSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed, y = Yspeed } };
                 return await _camera.MoveAsync(MoveType.Continuous, rightDownVector, rightDownSpeed, 0);
             case PTZControl.ZoomIn:
-                var zoomInVector = new PTZVector { Zoom = new Vector1D { x = Xspeed } };
-                var zoomInSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
+                var zoomInVector = new PTZVector { Zoom = new Vector1D { x = UnitConverter.MarsToCameraZoom(dto.HVel) } };
+                var zoomInSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xvector } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomInVector, zoomInSpeed, 0);
             case PTZControl.ZoomOut:
-                var zoomOutVector = new PTZVector { Zoom = new Vector1D { x = Xspeed } };
+                var zoomOutVector = new PTZVector { Zoom = new Vector1D { x =  -UnitConverter.MarsToCameraZoom(dto.HVel) } };
                 var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
             case PTZControl.Stop:

@@ -36,11 +36,12 @@ public class MarsRepository
 
     private async Task OnMqttMessageRecived(object? sender, MqttObject e)
     {
-        SerilogLogger.ConsoleLog($"PanTilt update: {e}");
         if (e.Topic is not nameof(Topics.PanTiltStatus)) return;
+
 
         var obj = BaseDto.ToJsonObject<PanTiltDto>(e.Payload!);
 
+        SerilogLogger.ConsoleLog(e.Payload!);
         var pan = obj.Pan;
         var tilt = obj.Tilt;
 
@@ -53,17 +54,17 @@ public class MarsRepository
             {
                 var dt = double.Parse(tilt);
                 var daz = double.Parse(pan);
-                var el = UnitConverter.ConvertToMils(daz);
-                var az = UnitConverter.ConvertToMils(dt);
+                
+                var el = UnitConverter.ConvertToMilsElevation(daz);
+                var az = UnitConverter.ConvertToMilsAzimuth(dt);
 
                 //if azimuth or eleveation is 0 mars thinks camera is לא זמין
                 pedestal.Elevation.Value = el;
                 pedestal.Azimuth.Value = az;
-                SerilogLogger.ConsoleLog($"elevation: {el} azimuth: {az}");
             }
         }
         await SendFullStatusReportToAll();
-
+        
         _xml.Write<DeviceStatusReport>(FullStatusReport);
     }
 
@@ -92,7 +93,8 @@ public class MarsRepository
         foreach (var mars in MarsClients)
         {
             await mars.Value.SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(FullStatusReport));
-            SerilogLogger.ConsoleLog($"FullStatusReport Sent to {mars.Key} after stop command.");
+
+            SerilogLogger.ConsoleLog($"FullStatusReport Sent to {mars.Key}.");
 
         }
     }

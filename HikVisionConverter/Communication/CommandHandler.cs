@@ -163,17 +163,18 @@ public class CommandHandler : ICommandHandler
         switch (opticalCommand.SimpleCommand)
         {
             case SimpleCommandType.Contrast:
-                //do nothing
-            case SimpleCommandType.Filter:
+                //do nothing andType.Filter:
                 //do nothing
             case SimpleCommandType.Zoom:
                 switch (opticalCommand.Operation)
                 {
                     case OperationType.Plus:
-                        await _mqtt.Publish(PTZControl.ZoomIn);
+
+                        await _mqtt.Publish(new ZoomDto(PTZControl.ZoomIn, Convert.ToInt32(opticalCommand.Item)));
+                        //await _mqtt.Publish(new MovementDto(PTZControl.ZoomIn, 1, 0));
                         return;
                     case OperationType.Minus:
-                        await _mqtt.Publish(PTZControl.ZoomOut);
+                        await _mqtt.Publish(new ZoomDto(PTZControl.ZoomOut, Convert.ToInt32(opticalCommand.Item)));
                         return;
                     case OperationType.Set:
                         //do nothing

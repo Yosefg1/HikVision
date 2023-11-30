@@ -19,6 +19,7 @@ public class MqttMessageHandler
     {
         _subscriber.OnMessageRecived += Mqtt_OnMessageRecived;
         _subscriber.Subscribe(nameof(PTZControl));
+
     }
 
     private async Task Mqtt_OnMessageRecived(object? sender, MqttObject e)
@@ -26,6 +27,8 @@ public class MqttMessageHandler
         await HandleMqttMessage(e.Topic!, e.Payload!);
     }
 
+
+    //todo: write proper muxing of dto...
     public async Task HandleMqttMessage(string topic, string payload)
     {
         // var dto = MovementDto.ToJsonObject(topic);
@@ -34,7 +37,16 @@ public class MqttMessageHandler
                                 .Select(x => x.ToString())
                                 .ToList();
 
-        var dto = MovementDto.ToJsonObject<MovementDto>(payload);
+        var zDto = ZoomDto.ToJsonObject<ZoomDto>(payload);
+        MovementDto dto;
+        if (zDto.Value != 0)
+        {
+            dto = new MovementDto(zDto.PTZ, zDto.Value, 0);
+        }
+        else
+        {
+            dto = MovementDto.ToJsonObject<MovementDto>(payload);
+        }
 
         if (!enumList.Contains(dto.PTZ.ToString())) return;
 

@@ -1,4 +1,4 @@
-﻿namespace HikVisionModel.Dto;
+﻿﻿namespace HikVisionModel.Dto;
 
 public class VideoSwitchDto : BaseDto
 {

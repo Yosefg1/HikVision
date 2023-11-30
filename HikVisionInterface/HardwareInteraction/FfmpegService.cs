@@ -1,44 +1,41 @@
-﻿using Onvif.Core.Client.Common;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace HikVisionInterface.HardwareInteraction;
 
 public class FfmpegService
 {
-    private Config? _config;
+    readonly FfmpegArgs? _config;
 
-    public FfmpegService()
+    public FfmpegService(FfmpegArgs? config)
     {
-        _config = ConfigFactory.Build();
-        _config.ValidConfig();
-        if (_config is null || !_config.ValidConfig())
-        {
-            SerilogLogger.ErrorLog("config is not fully set up");
-            return;
-        }
-        SerilogLogger.ConsoleLog(_config.Print());
+        _config = config;
     }
 
-    public void StartFfmpegProcess()
+    public void StartFfmpegProcess(bool WithAuth = true)
     {
         Task.Run(() =>
         {
+            string Auth = string.Empty;
+
+            if (WithAuth && _config!.UserName != "" && _config.Password != string.Empty)
+                Auth = $"{_config!.UserName}:{_config.Password}";
+
             //CloseFfmpegProcess();
 
             ProcessStartInfo processStartInfo = new()
             {
                 UseShellExecute = false,
                 CreateNoWindow = true,
+                //CreateNoWindow = false,
+                //WindowStyle = ProcessWindowStyle.Normal,
 
                 RedirectStandardInput = true,
                 RedirectStandardOutput = false,
                 RedirectStandardError = false,
 
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg.exe"),
-                //Arguments = "-an -i " + $"rtsp://{_config.UserName}:{_config.Password}@{_config.IP}:554" + 
-                //$" -f mpegts -c copy -fflags nobuffer udp://{_config.UDPMulticastIp}:{_config.UDPMulticastPort}?pkt_size=1316"
 
-                Arguments = "-an -i " + $"udp://@235.97.2.41:51001" +
+                Arguments = "-an -i " + $"{_config!.Format}://{Auth}@{_config.InputAddr}" +
                 $" -f mpegts -c copy -fflags nobuffer udp://{_config.UDPMulticastIp}:{_config.UDPMulticastPort}?pkt_size=1316"
             };
 
@@ -49,7 +46,7 @@ public class FfmpegService
                 ffmpegProcess.StartInfo = processStartInfo;
                 ffmpegProcess.Start();
                 if (ffmpegProcess is null) return false;
-                SerilogLogger.ConsoleLog("Ffmpeg process is started.");
+                SerilogLogger.ConsoleLog($"ffmpeg process is started. broadcasting to udp://{_config.UDPMulticastIp}:{_config.UDPMulticastPort}");
                 return true;
             }
             catch (Exception ex)

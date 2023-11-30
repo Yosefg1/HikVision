@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace HikVisionModel;
+﻿namespace HikVisionModel;
 
 public static class UnitConverter
 {
@@ -32,10 +30,21 @@ public static class UnitConverter
         return degree * (6400 / 360);
     }
 
+    public static double ConvertToMilsElevation(double inputValue)
+    {
+        var res = ConvertToAngle(inputValue) - 180;
+        return DegreeToMils(res) / 4;
+    }
+
     //From -1 to 1 value
-    public static double ConvertToMils(double inputValue)
+    public static double ConvertToMilsAzimuth(double inputValue)
     {
         var res = ConvertToAngle(inputValue);
         return DegreeToMils(res);
+    }
+
+    public static float MarsToCameraZoom(float value)
+    {
+        return value / 100;
     }
 }

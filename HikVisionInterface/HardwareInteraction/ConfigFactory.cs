@@ -9,24 +9,32 @@ internal class ConfigFactory
 
     public static Config Build()
     {
+        string path = CONFIG_FILE_PATH;
         try
         {
-            if (File.Exists(CONFIG_FILE_PATH))
+            if (File.Exists(path))
             {
-                var json = File.ReadAllText(CONFIG_FILE_PATH);
+                var json = File.ReadAllText(path);
                 return JsonConvert.DeserializeObject<Config>(json)!;
             }
             else
             {
                 var config = new Config();
                 var json = JsonConvert.SerializeObject(config);
-                File.WriteAllText(CONFIG_FILE_PATH, json);
+                File.WriteAllText(path, json);
+
+                if (config is null || !config.ValidConfig())
+                {
+                    SerilogLogger.ErrorLog("config is not fully set up");
+                    throw new Exception("config is not fully set up");
+                }
+
                 return config;
             }
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            SerilogLogger.ErrorLog(ex.Message);
             throw;
         }
     }
