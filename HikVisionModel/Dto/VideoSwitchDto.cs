@@ -5,8 +5,12 @@ public class VideoSwitchDto : BaseDto
     public VideoSwitchDto(PTZControl ptz)
     {
         PTZ = ptz;
-        VideoSwitch = PTZ is PTZControl.DayMode ? 1 : 2;
+        VideoSwitch = PTZ is PTZControl.DayMode;
+        DtoId = DtoEnum.VideoSwitchDto;
     }
 
-    public int VideoSwitch { get; set; }
+    /// <summary>
+    /// true of daycamera false if bw camera
+    /// </summary>
+    public bool VideoSwitch { get; private set; }
 }

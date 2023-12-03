@@ -9,6 +9,7 @@ public class MovementDto : BaseDto
         PTZ = ptz;
         HVel = hVel;
         VVel = vvel;
+        DtoId = DtoEnum.MovementDto;
     }
 
     public float HVel { get; set; } //horizontal velocity

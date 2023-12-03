@@ -48,16 +48,11 @@ public class CommandHandler : ICommandHandler
             case VideoSwitchCommandType videoSwitchCommand:
                 await HandleVideoSwitch(videoSwitchCommand);
                 break;
-                //case ScriptCommandType scriptCommand:
-                //    HandleScriptCommand(scriptCommand);
-                //    break;
+            default:
+                SerilogLogger.WarningLog($"{clientName} sent an unsupported command of type: {command}");
+                break;
         }
 
-    }
-
-    private void HandleScriptCommand(ScriptCommandType command)
-    {
-        throw new NotImplementedException();
     }
 
     private async Task HandleVideoSwitch(VideoSwitchCommandType videoSwitchCommand)
@@ -89,8 +84,11 @@ public class CommandHandler : ICommandHandler
                 await _repo.SendSpecificFullStatusReportToAll(sensorType);
             }
         }
-
-        await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.DayMode),nameof(SensorTypeType.VideoSwitch));
+        _repo.SwitchCamera();
+        if (_repo.IsDayCamera)
+            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.DayMode),nameof(SensorTypeType.VideoSwitch));
+        else
+            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.NightMode), nameof(SensorTypeType.VideoSwitch));
     }
 
     private void SetSensorInVideoChannel(VideoChannelIDType id, SensorTypeType sensorType, string sensorName = null)
@@ -227,7 +225,7 @@ public class CommandHandler : ICommandHandler
                 return;
             default:
                 // Only keep alive commands are supported
-                Console.WriteLine($"{deviceName} sent an unsupported command of type: {simpleCommand}");
+                SerilogLogger.WarningLog($"{deviceName} sent an unsupported command of type: {simpleCommand}");
                 return;
         }
     }

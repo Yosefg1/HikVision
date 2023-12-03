@@ -20,4 +20,9 @@ public static class SerilogLogger
     {
         Log.Error(message);
     }
+
+    public static void WarningLog(string message)
+    {
+        Log.Warning(message);
+    }
 }

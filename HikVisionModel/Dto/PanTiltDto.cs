@@ -14,6 +14,7 @@ public class PanTiltDto : BaseDto
         Tilt = tilt;
         Pan = pan;
         PTZ = PTZControl.Status;
+        DtoId = DtoEnum.PanTiltDto;
     }
 
     public string Pan { get; set; }

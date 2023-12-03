@@ -6,6 +6,7 @@ public class ZoomDto : BaseDto
     {
         PTZ = ptz;
         Value = value;
+        DtoId = DtoEnum.ZoomDto;
     }
 
     public int Value { get; set; }

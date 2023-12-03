@@ -11,6 +11,8 @@ public class MarsRepository
     public MarsRepository(XmlFileManager xml,
         PTZMqttSubscriber subscriber)
     {
+        IsDayCamera = true;
+
         _subscriber = subscriber;
         _subscriber.Connect();
         _subscriber.Subscribe(nameof(Topics.PanTiltStatus));
@@ -26,6 +28,8 @@ public class MarsRepository
         EmptyStatusReport = CreateKeepAlive();
     }
 
+    public bool IsDayCamera { get; private set; }
+
     public Dictionary<string, MarsClient> MarsClients;
 
     public DeviceConfiguration Configuration { get; private set; }
@@ -33,6 +37,11 @@ public class MarsRepository
     public DeviceStatusReport FullStatusReport { get; private set; }
 
     public DeviceStatusReport EmptyStatusReport { get; private set; }
+
+    public void SwitchCamera()
+    {
+        IsDayCamera = !IsDayCamera;
+    }
 
     private async Task OnMqttMessageRecived(object? sender, MqttObject e)
     {
@@ -120,7 +129,7 @@ public class MarsRepository
     private DeviceStatusReport CreateUpdatedStatusReportOfSpecificSensor(SensorTypeType sensorType)
     {
 
-        DeviceStatusReport deviceStatusReport = new DeviceStatusReport
+        DeviceStatusReport deviceStatusReport = new()
         {
             DeviceIdentification = FullStatusReport.DeviceIdentification,
             MessageType = FullStatusReport.MessageType,

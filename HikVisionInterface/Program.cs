@@ -24,20 +24,16 @@ public class Program
         builder.Services.AddSingleton<IPTZMqttPublisher, PTZMqttPublisher>();
         builder.Services.AddSingleton<MqttMessageHandler>();
         builder.Services.AddSingleton<CameraService>();
-        //builder.Services.AddSingleton<FfmpegService>();
+        builder.Services.AddSingleton<FfmpegManager>();
+        builder.Services.AddSingleton<MuxingService>();
         builder.Services.AddSingleton<XmlUpdaterService>();
 
         SerilogLogger.Init();
 
         var app = builder.Build();
 
-        var config = ConfigFactory.Build();
-
-        var ffmpeg = FfmpegServiceFactory.Build(config, 1);
-        var ffmpeg2 = FfmpegServiceFactory.Build(config, 2);
-
-        ffmpeg.StartFfmpegProcess();
-        ffmpeg2.StartFfmpegProcess();
+        var ffmpegManager = app.Services.GetRequiredService<FfmpegManager>();
+        ffmpegManager.Initialize();
 
         var messageHandler = app.Services.GetRequiredService<MqttMessageHandler>();
         messageHandler.Initialize();
