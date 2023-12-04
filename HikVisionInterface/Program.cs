@@ -26,7 +26,6 @@ public class Program
         builder.Services.AddSingleton<CameraService>();
         builder.Services.AddSingleton<FfmpegManager>();
         builder.Services.AddSingleton<MuxingService>();
-        builder.Services.AddSingleton<XmlUpdaterService>();
 
         SerilogLogger.Init();
 

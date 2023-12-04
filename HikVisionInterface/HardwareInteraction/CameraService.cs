@@ -39,7 +39,7 @@ public class CameraService
         {
             var status = await _camera!.Ptz.GetStatusAsync(_camera.Profile.token);
 
-            SerilogLogger.ConsoleLog(JsonConvert.SerializeObject(status));
+            //SerilogLogger.ConsoleLog(JsonConvert.SerializeObject(status));
 
             var vector = status.Position.PanTilt;
 
@@ -47,7 +47,7 @@ public class CameraService
         }
         catch (Exception ex)
         {
-            SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values \n{ex}");
+            SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values");
             return new PanTiltDto("0.577", "0.3213");
         }
     }
@@ -56,16 +56,16 @@ public class CameraService
     {
         PTZControl eTopic = dto.PTZ;
 
-        var Xspeed = UnitConverter.MarsToCameraSpeed(dto.Value);
+        var Xspeed = UnitConverter.MarsToCameraSpeed(1);
 
         switch (eTopic)
         {
             case PTZControl.ZoomIn:
-                var zoomInVector = new PTZVector { Zoom = new Vector1D { x = UnitConverter.MarsToCameraZoom(dto.Value) } };
+                var zoomInVector = new PTZVector { Zoom = new Vector1D { x = UnitConverter.MarsToCameraZoom(1) } };
                 var zoomInSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomInVector, zoomInSpeed, 0);
             case PTZControl.ZoomOut:
-                var zoomOutVector = new PTZVector { Zoom = new Vector1D { x = -UnitConverter.MarsToCameraZoom(dto.Value) } };
+                var zoomOutVector = new PTZVector { Zoom = new Vector1D { x = -UnitConverter.MarsToCameraZoom(1) } };
                 var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
             default: 
@@ -77,7 +77,7 @@ public class CameraService
     public async Task<bool> MoveAsync(MovementDto dto)
     {
         PTZControl eTopic = dto.PTZ;
-
+        
         var Xspeed = UnitConverter.MarsToCameraSpeed(dto.HVel);
         var Yspeed = UnitConverter.MarsToCameraSpeed(dto.VVel);
 
@@ -94,14 +94,20 @@ public class CameraService
                 var rightVector = new PTZVector { PanTilt = new Vector2D { x = Xvector } };
                 var rightSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Continuous, rightVector, rightSpeed, 0);
+
             case PTZControl.Up:
+                var Uspeed = UnitConverter.MarsToVerticalCameraSpeed(dto.VVel);
+
                 var upVector = new PTZVector { PanTilt = new Vector2D { y = Yvector } };
-                var upSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed, y = Yspeed } };
+                var upSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0, y = Uspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, upVector, upSpeed, 0);
             case PTZControl.Down:
+                var Dspeed = UnitConverter.MarsToVerticalCameraSpeed(dto.VVel);
+
                 var downVector = new PTZVector { PanTilt = new Vector2D { y = Yvector } };
-                var downSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed, y = Yspeed } };
+                var downSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0, y = Dspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, downVector, downSpeed, 0);
+
             case PTZControl.LeftUp:
                 var leftUpVector = new PTZVector { PanTilt = new Vector2D { x = Xvector, y = Yvector } };
                 var leftUpSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed, y = Yspeed } };

@@ -4,5 +4,6 @@ namespace HikVisionModel.Enums;
 public enum Topics
 {
     PTZControl,
-    PanTiltStatus
+    PanTiltStatus,
+    VideoSwitch
 }

@@ -86,9 +86,9 @@ public class CommandHandler : ICommandHandler
         }
         _repo.SwitchCamera();
         if (_repo.IsDayCamera)
-            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.DayMode),nameof(SensorTypeType.VideoSwitch));
+            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.DayMode),nameof(Topics.VideoSwitch));
         else
-            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.NightMode), nameof(SensorTypeType.VideoSwitch));
+            await _mqtt.Publish<VideoSwitchDto>(new VideoSwitchDto(PTZControl.NightMode), nameof(Topics.VideoSwitch));
     }
 
     private void SetSensorInVideoChannel(VideoChannelIDType id, SensorTypeType sensorType, string sensorName = null)
@@ -199,7 +199,7 @@ public class CommandHandler : ICommandHandler
                 return;
 
             case SimpleCommandType.Restart:
-                await _mqtt.Publish(PTZControl.Restart);
+                //await _mqtt.Publish(PTZControl.Restart);
                 return;
         }
     }
@@ -215,10 +215,10 @@ public class CommandHandler : ICommandHandler
                 //dunno
                 return;
             case SimpleCommandType.Reset:
-                await _mqtt.Publish(PTZControl.Reset);
+                //await _mqtt.Publish(PTZControl.Reset);
                 return;
             case SimpleCommandType.Restart:
-                await _mqtt.Publish(PTZControl.Restart);
+                //await _mqtt.Publish(PTZControl.Restart);
                 return;
             case SimpleCommandType.KeepAlive:
                 await _repo.SendEmptyDeviceStatusReport(deviceName);

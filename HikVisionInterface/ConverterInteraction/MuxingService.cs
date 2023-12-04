@@ -54,6 +54,7 @@ public class MuxingService
             case DtoEnum.ZoomDto:
                 var zDto = BaseDto.ToJsonObject<ZoomDto>(json);
 
+                SerilogLogger.ConsoleLog($"{zDto.PTZ} + {zDto.Value}");
                 await _camera.ZoomAsync(zDto);
                 break;
             case DtoEnum.PanTiltDto:

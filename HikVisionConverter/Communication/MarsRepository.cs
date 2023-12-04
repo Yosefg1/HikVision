@@ -61,15 +61,13 @@ public class MarsRepository
 
             if (k.Item is PedestalStatus pedestal)
             {
-                var dt = double.Parse(tilt);
-                var daz = double.Parse(pan);
-                
-                var el = UnitConverter.ConvertToMilsElevation(daz);
-                var az = UnitConverter.ConvertToMilsAzimuth(dt);
+                var elevation = UnitConverter.ConvertToMilsElevation(double.Parse(pan));
+                var azimuth = UnitConverter.ConvertToMilsAzimuth(double.Parse(tilt));
+                SerilogLogger.ConsoleLog($"elevation: {elevation * 360 / 6400} azimuth: {azimuth * 360 / 6400}");
 
                 //if azimuth or eleveation is 0 mars thinks camera is לא זמין
-                pedestal.Elevation.Value = el;
-                pedestal.Azimuth.Value = az;
+                pedestal.Elevation.Value = elevation;
+                pedestal.Azimuth.Value = azimuth;
             }
         }
         await SendFullStatusReportToAll();

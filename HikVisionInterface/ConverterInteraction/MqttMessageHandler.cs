@@ -19,7 +19,9 @@ public class MqttMessageHandler
     public void Initialize()
     {
         _subscriber.OnMessageRecived += Mqtt_OnMessageRecived;
+
         _subscriber.Subscribe(nameof(PTZControl));
+        _subscriber.Subscribe(nameof(Topics.VideoSwitch));
     }
 
     private async Task Mqtt_OnMessageRecived(object? sender, MqttObject e)
