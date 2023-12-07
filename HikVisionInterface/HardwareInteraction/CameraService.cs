@@ -8,14 +8,19 @@ public class CameraService
 {
     private readonly IPTZMqttPublisher _publisher;
 
-    private HikVisionInterface.HardwareInteraction.Model.Config? _cameraConfig;
-    private Camera? _camera;
+    private readonly Camera? _camera;
+    private readonly HikVisionInterface.HardwareInteraction.Model.Config? _cameraConfig;
+    
+    private int ZoomLimiter = 0;
+    private const int ZOOM_MAX = 5;
+    private System.Timers.Timer? _LimitResetTimer;
 
 
     public CameraService(IPTZMqttPublisher publisher)
     {
         _publisher = publisher;
         _publisher.Connect();
+        this.InitZoomTimer();
 
         try
         {
@@ -39,13 +44,12 @@ public class CameraService
         {
             var status = await _camera!.Ptz.GetStatusAsync(_camera.Profile.token);
 
-            //SerilogLogger.ConsoleLog(JsonConvert.SerializeObject(status));
 
             var vector = status.Position.PanTilt;
-
+             
             return new(vector.x.ToString(), vector.y.ToString());
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             SerilogLogger.ErrorLog($"Camera not connected, Sending dummy values");
             return new PanTiltDto("0.577", "0.3213");
@@ -61,10 +65,26 @@ public class CameraService
         switch (eTopic)
         {
             case PTZControl.ZoomIn:
+
+                if (ZoomLimiter > ZOOM_MAX)
+                {
+                    SerilogLogger.WarningLog("ZoomIn Ignored due to spam.");
+                    return false;
+                }
+                ZoomLimiter++;
+
                 var zoomInVector = new PTZVector { Zoom = new Vector1D { x = UnitConverter.MarsToCameraZoom(1) } };
                 var zoomInSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomInVector, zoomInSpeed, 0);
             case PTZControl.ZoomOut:
+
+                if (ZoomLimiter < -ZOOM_MAX)
+                {
+                    SerilogLogger.WarningLog("ZoomOut Ignored due to spam.");
+                    return false;
+                }
+                ZoomLimiter--;
+
                 var zoomOutVector = new PTZVector { Zoom = new Vector1D { x = -UnitConverter.MarsToCameraZoom(1) } };
                 var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
                 return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
@@ -72,6 +92,20 @@ public class CameraService
                 return false;
         }
 
+    }
+
+    private void InitZoomTimer() 
+    {
+        _LimitResetTimer = new(3000)
+        {
+            AutoReset = true,
+            Enabled = true
+        };
+        _LimitResetTimer.Elapsed += (sender, e) =>
+        {
+            ZoomLimiter = 0;
+        };
+        _LimitResetTimer.Start();
     }
 
     public async Task<bool> MoveAsync(MovementDto dto)
@@ -100,13 +134,13 @@ public class CameraService
 
                 var upVector = new PTZVector { PanTilt = new Vector2D { y = Yvector } };
                 var upSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0, y = Uspeed } };
-                return await _camera.MoveAsync(MoveType.Relative, upVector, upSpeed, 0);
+                return await _camera.MoveAsync(MoveType.Continuous, upVector, upSpeed, 0);
             case PTZControl.Down:
                 var Dspeed = UnitConverter.MarsToVerticalCameraSpeed(dto.VVel);
 
                 var downVector = new PTZVector { PanTilt = new Vector2D { y = Yvector } };
                 var downSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0, y = Dspeed } };
-                return await _camera.MoveAsync(MoveType.Relative, downVector, downSpeed, 0);
+                return await _camera.MoveAsync(MoveType.Continuous, downVector, downSpeed, 0);
 
             case PTZControl.LeftUp:
                 var leftUpVector = new PTZVector { PanTilt = new Vector2D { x = Xvector, y = Yvector } };
@@ -124,14 +158,6 @@ public class CameraService
                 var rightDownVector = new PTZVector { PanTilt = new Vector2D { x = Xvector, y = Yvector } };
                 var rightDownSpeed = new PTZSpeed { PanTilt = new Vector2D { x = Xspeed, y = Yspeed } };
                 return await _camera.MoveAsync(MoveType.Continuous, rightDownVector, rightDownSpeed, 0);
-            //case PTZControl.ZoomIn:
-            //    var zoomInVector = new PTZVector { Zoom = new Vector1D { x = UnitConverter.MarsToCameraZoom(dto.HVel) } };
-            //    var zoomInSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xvector } };
-            //    return await _camera.MoveAsync(MoveType.Relative, zoomInVector, zoomInSpeed, 0);
-            //case PTZControl.ZoomOut:
-            //    var zoomOutVector = new PTZVector { Zoom = new Vector1D { x =  -UnitConverter.MarsToCameraZoom(dto.HVel) } };
-            //    var zoomOutSpeed = new PTZSpeed { Zoom = new Vector1D { x = Xspeed } };
-            //    return await _camera.MoveAsync(MoveType.Relative, zoomOutVector, zoomOutSpeed, 0);
             case PTZControl.Stop:
                 var stopVector = new PTZVector { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };
                 var stopSpeed = new PTZSpeed { PanTilt = new Vector2D { x = 0f, y = 0f }, Zoom = new Vector1D { x = 0f } };

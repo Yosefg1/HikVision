@@ -8,8 +8,8 @@ namespace HikVisionModel.Dto;
 
 public class PanTiltDto : BaseDto
 {
-    public PanTiltDto(string tilt,
-        string pan)
+    public PanTiltDto(string pan,
+        string tilt)
     {
         Tilt = tilt;
         Pan = pan;

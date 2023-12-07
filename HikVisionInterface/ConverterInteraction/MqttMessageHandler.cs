@@ -13,7 +13,7 @@ public class MqttMessageHandler
         PTZMqttSubscriber subscriber)
     {
         _subscriber = subscriber;
-        _muxer = muxer;
+        _muxer = muxer;      
     }
 
     public void Initialize()

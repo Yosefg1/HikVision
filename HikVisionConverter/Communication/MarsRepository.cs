@@ -61,8 +61,8 @@ public class MarsRepository
 
             if (k.Item is PedestalStatus pedestal)
             {
-                var elevation = UnitConverter.ConvertToMilsElevation(double.Parse(pan));
-                var azimuth = UnitConverter.ConvertToMilsAzimuth(double.Parse(tilt));
+                var elevation = UnitConverter.ConvertToMilsElevation(double.Parse(tilt));
+                var azimuth = UnitConverter.ConvertToMilsAzimuth(double.Parse(pan));
                 SerilogLogger.ConsoleLog($"elevation: {elevation * 360 / 6400} azimuth: {azimuth * 360 / 6400}");
 
                 //if azimuth or eleveation is 0 mars thinks camera is לא זמין
