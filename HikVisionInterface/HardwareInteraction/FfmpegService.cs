@@ -51,7 +51,11 @@ public class FfmpegService
                 RedirectStandardError = false,
                 FileName = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ffmpeg.exe"),
                 Arguments = "-an -i " + $"{Config!.Format}://{auth}@{Config.InputAddr}" +
-                            $" -f mpegts -c copy -fflags nobuffer udp://{Config.UDPMulticastIp}:{Config.UDPMulticastPort}?pkt_size=1316"
+                $" -f mpegts -c copy -fflags nobuffer -flags low_delay -probesize 32 -tune zerolatency udp://{Config.UDPMulticastIp}:{Config.UDPMulticastPort}?pkt_size=1024"
+                // Arguments = "-an -i " + $"{Config!.Format}://{auth}@{Config.InputAddr}" +
+                //    $" -f mpegts -c copy -fflags nobuffer -flags low_delay -probesize 32 -tune zerolatency udp://{Config.UDPMulticastIp}:{Config.UDPMulticastPort}?pkt_size=1316"
+                //Arguments = "-an -i " + $"{Config!.Format}://{auth}@{Config.InputAddr}" +
+                //            $" -f mpegts -c copy -fflags nobuffer udp://{Config.UDPMulticastIp}:{Config.UDPMulticastPort}?pkt_size=1316"
             };
 
             try
