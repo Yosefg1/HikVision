@@ -80,8 +80,6 @@ public class MarsRepository
         if (!MarsClients.ContainsKey(clientName)) return;
 
         await MarsClients[clientName].SoapClient!.doDeviceStatusReportAsync(ResponseMapper.Map(EmptyStatusReport));
-
-
     }
 
     public async Task SendFullStatusReport(string client)
